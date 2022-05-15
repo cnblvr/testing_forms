@@ -1,5 +1,5 @@
 name: dispatch
-on [push]
+on: [push]
 
 jobs:
   dispatch:
