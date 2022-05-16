@@ -1,13 +1,30 @@
-name: dispatch
-on: [push]
+name: testing_forms
+on:
+  push:
 
 jobs:
-  dispatch:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          repository: cnblvr/testing_forms_deploy
-          event-type: deploy
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.17
+
+    - name: Build
+      run: go build ./cmd/api/main.go
+
+    - name: Test
+      run: go test ./...
+
+#   dispatch:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: peter-evans/repository-dispatch@v2
+#         with:
+#           token: ${{ secrets.REPO_ACCESS_TOKEN }}
+#           repository: cnblvr/testing_forms_deploy
+#           event-type: deploy
+#           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
